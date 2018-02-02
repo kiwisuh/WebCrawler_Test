@@ -1,10 +1,12 @@
 package vaibscrawl;
 
+import java.util.Set;
 import java.util.logging.LogManager;
 import java.util.regex.Pattern;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
+import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 /**
@@ -16,7 +18,7 @@ public class MVaibsWecker2 extends WebCrawler {
     // final static Logger logger = Logger.getLogger(MVaibsWecker.class);
     private final static Pattern FILTERS = Pattern
 	    .compile(".*(\\.(css|js|gif|jpe?g" + "|png|mp3|mp3|zip|gz))$");
-    String urli = "http://google.com/";
+    String urli = "https://sikaman.dyndns.org/";
 
     /**
      * This method receives two parameters. The first parameter is the page in
@@ -41,15 +43,19 @@ public class MVaibsWecker2 extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-	String href = page.getWebURL().getURL();
-	// System.out.println("URL: " + url);
-	LogManager.getLogManager().reset();
+        String url = page.getWebURL().getURL();
+        System.out.println("URL: " + url);
 
-	System.out.println("      " + href);
-	// do whatever with the url
+        if (page.getParseData() instanceof HtmlParseData) {
+            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
+            String text = htmlParseData.getText();
+            String html = htmlParseData.getHtml();
+            Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-	// YOU CAN GET THE CONTENT OF THE URL AND ADD SOME REJEX TO FILTER OUT
-	// EMAIL,PHONE NO,NAMES, SOME SPECIFIC INFO.
-    }
+            System.out.println("Text length: " + text.length());
+            System.out.println("Html length: " + html.length());
+            System.out.println("Number of outgoing links: " + links.size());
+        }
+   }
 
 }
