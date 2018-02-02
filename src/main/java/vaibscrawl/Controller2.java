@@ -16,7 +16,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 public class Controller2 {
     public static void main(String[] args) throws Exception {
     	String crawlStorageFolder = "/data/crawl/root";
-        int numberOfCrawlers = 7;
+        int numberOfCrawlers = 10;
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
@@ -35,6 +35,8 @@ public class Controller2 {
          * which are found in these pages
          */
         controller.addSeed("https://sikaman.dyndns.org/");
+        controller.addSeed("https://sikaman.dyndns.org/courses/");
+        controller.addSeed("https://sikaman.dyndns.org/courses/4601");
 //        controller.addSeed("http://www.ics.uci.edu/~welling/");
 //    	controller.addSeed("http://www.ics.uci.edu/");
 

@@ -8,14 +8,20 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import java.net.UnknownHostException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import com.mongodb.*;
+import org.bson.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Vaibs
  *
  */
-
 public class MVaibsWecker2 extends WebCrawler {
     // final static Logger logger = Logger.getLogger(MVaibsWecker.class);
+	static int counter = 0;
     private final static Pattern FILTERS = Pattern
 	    .compile(".*(\\.(css|js|gif|jpe?g" + "|png|mp3|mp3|zip|gz))$");
     String urli = "https://sikaman.dyndns.org/";
@@ -41,11 +47,18 @@ public class MVaibsWecker2 extends WebCrawler {
      * This function is called when a page is fetched and ready to be processed
      * by your program.
      */
+    MongoClient client = new MongoClient("localhost", 27017);
+	@SuppressWarnings("deprecation")
+	DB database = client.getDB("WebCrawler");
+	DBCollection coll_temp = database.getCollection("Urls");
     @Override
-    public void visit(Page page) {
+    public void visit(Page page){
         String url = page.getWebURL().getURL();
         System.out.println("URL: " + url);
-
+		BasicDBObject document = new BasicDBObject();
+		document.put("url_id", counter);
+		document.put("url_Name", url);
+		coll_temp.insert(document);
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
@@ -55,6 +68,8 @@ public class MVaibsWecker2 extends WebCrawler {
             System.out.println("Text length: " + text.length());
             System.out.println("Html length: " + html.length());
             System.out.println("Number of outgoing links: " + links.size());
+            System.out.println("Number of visited pages: " + counter);
+            counter++;
         }
    }
 
