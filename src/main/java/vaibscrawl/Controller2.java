@@ -1,7 +1,7 @@
 package vaibscrawl;
 
 import java.util.Date;
-
+import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -9,8 +9,9 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import java.util.ArrayList;
 import java.util.Map;
-
+import Jama.Matrix;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 //import Jama.Matrix;
@@ -19,6 +20,8 @@ import org.jgrapht.graph.DefaultEdge;
  * iseebug.com
  *
  */
+
+@SuppressWarnings("deprecation")
 public class Controller2 {
     public static void main(String[] args) throws Exception {
     	String crawlStorageFolder = "/data/crawl/root";
@@ -26,7 +29,11 @@ public class Controller2 {
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
-
+        config.setPolitenessDelay(200);
+        config.setMaxPagesToFetch(1000);
+        config.setResumableCrawling(false);
+        config.setIncludeBinaryContentInCrawling(true);
+        
         /*
          * Instantiate the controller for this crawl.
          */
@@ -54,6 +61,10 @@ public class Controller2 {
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
+
+        //DirectedGraph<Integer, DefaultEdge> dg = PageGraph.getInstance().getDg();
+        
         controller.start(MVaibsWecker2.class, numberOfCrawlers);
+        
     }
 }

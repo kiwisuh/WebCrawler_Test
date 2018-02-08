@@ -49,7 +49,7 @@ public class MVaibsWecker2 extends WebCrawler {
      */
     MongoClient client = new MongoClient("localhost", 27017);
 	@SuppressWarnings("deprecation")
-	DB database = client.getDB("WebCrawler");
+	DB database = client.getDB("WebCrawler_final");
 	DBCollection coll_temp = database.getCollection("Urls");
     @Override
     public void visit(Page page){
